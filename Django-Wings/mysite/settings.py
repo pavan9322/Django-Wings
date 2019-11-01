@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,11 +22,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'z=$ml7cdu@)h7fok53*&7o=(!%h!ujqy2c!nnh$f)8tdh%8709'
+# SECRET_KEY = os.environ.get('SECRETE_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
+
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['djangowings.herokuapp.com','localhost','127.0.0.1']
 
 
 # Application definition
@@ -36,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  
     'crud',
     'widget_tweaks',
     'rest_framework',
@@ -50,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -126,8 +133,14 @@ LOGIN_URL = '/login/'
 
 LOGIN_REDIRECT_URL = 'home'
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "static")
+# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'static'),
 )
+
+
+#
+
+django_heroku.settings(locals())
